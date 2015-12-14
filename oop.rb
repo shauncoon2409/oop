@@ -234,6 +234,7 @@ p "Time to run num_single_letters:"
 #trace.enable
 
 
+
 #p "Array_two_char.class is a " + array_two_char.class.to_s
 
 
