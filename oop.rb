@@ -226,6 +226,7 @@ p "Time to run num_single_letters:"
 
 
 
+
 # Tried TracePoint at one point, didn't find it helped all that much
 #trace = TracePoint.new(:raise) do |t|
 #  p t.inspect
