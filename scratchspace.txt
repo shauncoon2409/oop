@@ -1,0 +1,122 @@
+
+what I need to do is to 
+1) make sure I have available the one-letter words found in the source, as well as both 'a' and 'i'. In this case, it's M.
+2) split the three letters in each three letter word from the substitution list, and split the three letter words form the source list
+3) check each letter from each word (array) in the three-letter-sub list, and select only those three-letter arrays that match 'a' or 'i'.
+4) add the words that match those three-letter-arrays into an 'approved' list of three-letter-words (i.e, a subset of the original set)
+5) 
+
+
+I start with
+threeChar - the array of three-character words found in the source (MTN, JPX, RAM)
+singleSourceOneChar  - the array of single-character words found in the source (M)
+singleSubOneChar - the array of single-letter characters found in the substitutable array ('a', 'i')
+threeLetterSubArray - the full array of TLW ('and', 'him', 'the')
+threeLetterSubConstrainedArray - the array of TLW that contain a or i - let's go with ('and', 'him')
+
+
+if there's a singleSourceOneChar - 
+   split threeChar into individual letters, with index
+       compare singleSourceOneChar against each index position of threeChar (e.g, 'M'TN, RA'M')
+         capture the index position, and set singleSubOneChar as 'a', then
+            note each each item in threeLetterSubConstrainedArray that has 'a' at that index
+               This gives 'M'TN for position 0
+                  save as threeLetterSubArrayApproved[i]
+               and RA'M' for position 2
+               	  save as threeLetterSubArrayApproved[i++]
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def num_triple_letters(threeChar)
+        # As usual, begin by assigning a variable
+        # to be incremented:
+        @c=0
+
+	def initialize(arrayOfCmnThreeLetterWordsApproved)    
+	  @arrayOfCmnThreeLetterWordsApproved=arrayOfCmnThreeLetterWordsApproved 
+    	end
+
+
+        #@threeCharArrayMid = $threeCharArrayNew
+        p threeChar
+        #@arrayCommonThreeLetterWords = [ "the", "and", "for", "are", "but", "not", "you", "all", "any", "can", "had", "her", "was", "one", "our", "out", "day", "get", "has", "him", "his", "how", "man", "new", "now", "old", "see", "two", "way", "who", "boy", "did", "its", "let", "put", "say", "she", "too", "use" ]        
+        @arrayCommonThreeLetterWords = [ "and" ]        
+        #p @arrayCommonThreeLetterWords[$c]
+        
+        
+        # This is the entry point for the split-tla-into-individual-letters logic:
+        @arrayCommonThreeLetterWords.each do |j|
+            @sourceString=$str
+
+            # first build the array of 
+            # letters to be substituted:
+            arrayOfCommonThreeLetterWordComponents=j.split(//)
+	    
+	    p arrayOfCommonThreeLetterWordComponents[0]
+            p arrayOfCommonThreeLetterWordComponents[1]
+            p arrayOfCommonThreeLetterWordComponents[2]
+
+	# this needs to be in a lower loop, after we check j for fOC?
+
+            # then the 'source' letters
+            @sourceThreeCharComponents=threeChar.split(//)
+            
+	    #p @sourceThreeCharComponents[0]
+            #p @sourceThreeCharComponents[1]
+            #p @sourceThreeCharComponents[2]
+
+	    #p $finalOneSourceChar[1] 
+	    p  "sourceThreeCharComponents[0] is #{@sourceThreeCharComponents[0]}"
+	    @sourceThreeCharComponents.each_with_index do |fOC, index|
+	 	#
+		# What we're saying here is: take apart each common three-letter word,
+		# and check to see if sourceThreeChar's current index matches it. If so, 
+		# drop it into the new array of common three letter words against
+		# which we're checking:
+		# (this is a nine-charatcer check, three-by-three
+		#  each three aOCTL gets checked against each
+		#
+		# This subsection checks the list of letters from the common
+		# three letter words, and adds the word if finalOneSourceChar is one 
+		# of the three:
+		if $finalOneSourceChar == fOC
+		  p "index is #{index}"
+		
+		  # if you find this, you should also have the index number, so you can 
+		  # grab the correct tla more quickly(in theory):
+		
+		
+		  @arrayCmnThreeLetterWordsApproved = @arrayCmnThreeLetterWordsApproved.push(i)
+            	  @firstTempString=@sourceString.gsub("#{@sourceThreeChar[0]}","#{@arrayOfCmnThreeLetterWordsApproved[0]}")
+            	  @secondTempString=@firstTempString.gsub("#{@sourceThreeChar[1]}","#{@arrayOfCmnThreeLetterWordsApproved[1]}")
+            	  @thirdTempString=@secondTempString.gsub("#{@sourceThreeChar[2]}","#{@arrayOfCmnThreeLetterWordsApproved[2]}")
+	p "thirdTempString[0] is #{@thirdTempString[0]}"
+		end
+	    end
+
+
+
+	#if @c == 38
+	#then    
+            #puts @firstTempString
+            #puts @secondTempString
+            puts @thirdTempString
+	    #puts @c
+	    #p "finalThreeLetterArray.count is #{$finalThreeLetterArray.count}"
+            $finalThreeLetterArray = $finalThreeLetterArray.push(*@thirdTempString)
+	    #puts $finalThreeLetterArray[350]
+	#end 
+            @c += 1
+        end
+        #gets
+    end
