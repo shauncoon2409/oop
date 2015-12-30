@@ -2,7 +2,8 @@
 ###str="ABAC ADBABACEB FBG"
 ## the dollar sign makes $string a 'global', since 
 ## it's the sole beginnging piece of date to work with:
-$str="BT JPX RMLX PCUV AMLX ICVJP IBTWXVR CI M LMTR PMTN, MTN YVCJX CDXV MWMBTRJ JPX AMTNGXRJBAH UQCT JPX QGMRJXV CI JPX YMGG CI JPX HBTWR QMGMAX; MTN JPX HBTW RMY JPX QMVJ CI JPX PMTN JPMJ YVCJX. JPXT JPX HBTWR ACUTJXTMTAX YMR APMTWXN, MTN PBR JPCUWPJR JVCUFGXN PBL, RC JPMJ JPX SCBTJR CI PBR GCBTR YXVX GCCRXN, MTN PBR HTXXR RLCJX CTX MWMBTRJ MTCJPXV. JPX HBTW AVBXN MGCUN JC FVBTW BT JPX MRJVCGCWXVR, JPX APMGNXMTR, MTN JPX RCCJPRMEXVR. MTN JPX HBTW RQMHX, MTN RMBN JC JPX YBRX LXT CI FMFEGCT, YPCRCXDXV RPMGG VXMN JPBR YVBJBTW, MTN RPCY LX JPX BTJXVQVXJMJBCT JPXVXCI, RPMGG FX AGCJPXN YBJP RAM"
+#$str="BT JPX RMLX PCUV AMLX ICVJP IBTWXVR CI M LMTR PMTN, MTN YVCJX CDXV MWMBTRJ JPX AMTNGXRJBAH UQCT JPX QGMRJXV CI JPX YMGG CI JPX HBTWR QMGMAX; MTN JPX HBTW RMY JPX QMVJ CI JPX PMTN JPMJ YVCJX. JPXT JPX HBTWR ACUTJXTMTAX YMR APMTWXN, MTN PBR JPCUWPJR JVCUFGXN PBL, RC JPMJ JPX SCBTJR CI PBR GCBTR YXVX GCCRXN, MTN PBR HTXXR RLCJX CTX MWMBTRJ MTCJPXV. JPX HBTW AVBXN MGCUN JC FVBTW BT JPX MRJVCGCWXVR, JPX APMGNXMTR, MTN JPX RCCJPRMEXVR. MTN JPX HBTW RQMHX, MTN RMBN JC JPX YBRX LXT CI FMFEGCT, YPCRCXDXV RPMGG VXMN JPBR YVBJBTW, MTN RPCY LX JPX BTJXVQVXJMJBCT JPXVXCI, RPMGG FX AGCJPXN YBJP RAM"
+$str="BT JPX MTN M BT"
 
 puts "Original string is #{$str}"
 
@@ -84,15 +85,19 @@ class ArrayOfCharacters < Array
 
             # then the 'source' letter
             @sourceOneChar=oneChar.split(//)
-            #p @sourceOneChar[0]
+            p "@sourceOneChar[0] is #{@sourceOneChar[0]}"
             #p @sourceOneChar[1]
 
             @firstTempString=@sourceString.gsub("#{@sourceOneChar[0]}","#{arrayOfCommonOneLetters[0]}")
 
 
-            puts @firstTempString
+            #puts "@firstTempString is #{@firstTempString}"
+	    # This contains the manipulated string:
             $finalOneLetterArray = $finalOneLetterArray.push(*@firstTempString)
-            $finalOneSourceChar = $finalOneSourceChar.push(*@sourceOneChar)
+
+	    # Whereas this contains the segment that was swapped out:
+            $finalSourceOneChar = $finalSourceOneChar.push(@sourceOneChar[0])
+	    p "$[0]finalSourceOneChar[0] is #{$finalSourceOneChar[0]}"
             @a += 1
         end
         #gets
@@ -133,7 +138,7 @@ class ArrayOfCharacters < Array
 	#gets
     end
 
-    def num_triple_letters(threeChar)
+    def num_triple_letters(sourceThreeChar)
         # As usual, begin by assigning a variable
         # to be incremented:
         @c=0
@@ -142,59 +147,185 @@ class ArrayOfCharacters < Array
 	  @arrayOfCmnThreeLetterWordsApproved=arrayOfCmnThreeLetterWordsApproved 
     	end
 
+	@localTLWPosition = Array.new
+	arrayApprovedThreeLetterWords = Array.new
 
-        #@threeCharArrayMid = $threeCharArrayNew
-        p threeChar
+        #@sourceThreeCharArrayMid = $sourceThreeCharArrayNew
+        p "sourceThreeCar is #{sourceThreeChar}"
         #@arrayCommonThreeLetterWords = [ "the", "and", "for", "are", "but", "not", "you", "all", "any", "can", "had", "her", "was", "one", "our", "out", "day", "get", "has", "him", "his", "how", "man", "new", "now", "old", "see", "two", "way", "who", "boy", "did", "its", "let", "put", "say", "she", "too", "use" ]        
-        @arrayCommonThreeLetterWords = [ "and" ]        
+        @arrayCommonThreeLetterWords = [ "and", "can", "all", "the" ]        
+        #@arrayConstrainedThreeLetterWords = [ "and", "can", "all" ]        
+        @arrayConstrainedThreeLetterWords = [ "and", "can" ]        
         #p @arrayCommonThreeLetterWords[$c]
+        
+        
+        # This is the entry point for the split-tla-into-individual-letters logic:
         @arrayCommonThreeLetterWords.each do |j|
             @sourceString=$str
 
             # first build the array of 
             # letters to be substituted:
-            arrayOfCommonThreeLetters=j.split(//)
+            arrayOfCommonThreeLetterWordComponents=j.split(//)
 	    
-	    #p arrayOfCommonThreeLetters[0]
-            #p arrayOfCommonThreeLetters[1]
-            #p arrayOfCommonThreeLetters[2]
+	    ##p arrayOfCommonThreeLetterWordComponents[0]
+            ##p arrayOfCommonThreeLetterWordComponents[1]
+            ##p arrayOfCommonThreeLetterWordComponents[2]
 
-	# this needs to be in a lower loop, after we check j for fOC?
+	    # this needs to be in a lower loop, after we check j for fOC?
 
             # then the 'source' letters
-            @sourceThreeChar=threeChar.split(//)
+            @sourceThreeCharComponents=sourceThreeChar.split(//)
             
-	    #p @sourceThreeChar[0]
-            #p @sourceThreeChar[1]
-            #p @sourceThreeChar[2]
+	    #p @sourceThreeCharComponents[0]
+            #p @sourceThreeCharComponents[1]
+            #p @sourceThreeCharComponents[2]
 
-	    #p $finalOneSourceChar[1] 
-	    p  "sourceThreeChar[0] is #{@sourceThreeChar[0]}"
-	    @sourceThreeChar.each do |fOC|
-	 	#
-		# # What we're saying here is: take apart each common three-letter word,
-		#  # and check to see if sourceThreeChar's current index matches it. If so, 
-		#   # drop it into the new array of common three letter words against
-		#    # which we're checking:
-		#     # (this is a nine-charatcer check, three-by-three
-		#      #  each three aOCTL gets checked against each
-		#       #
-		#        # This subsection checks the list of letters from the common
-		#         # three letter words, and adds the word if finalOneSourceChar is one 
-		#          # of the three:
-		if $finalOneSourceChar == fOC
-		  @arrayCmnThreeLetterWordsApproved = @arrayCmnThreeLetterWordsApproved.push(i)
-            	  @firstTempString=@sourceString.gsub("#{@sourceThreeChar[0]}","#{@arrayOfCmnThreeLetterWordsApproved[0]}")
-            	  @secondTempString=@firstTempString.gsub("#{@sourceThreeChar[1]}","#{@arrayOfCmnThreeLetterWordsApproved[1]}")
-            	  @thirdTempString=@secondTempString.gsub("#{@sourceThreeChar[2]}","#{@arrayOfCmnThreeLetterWordsApproved[2]}")
-	p "thirdTempString[0] is #{@thirdTempString[0]}"
-		end
+	    #p $finalSourceOneChar[1] 
+	    ##p  "sourceThreeCharComponents[0] is #{@sourceThreeCharComponents[0]}"
+	    ##p  "sourceThreeCharComponents[1] is #{@sourceThreeCharComponents[1]}"
+	    ##p  "sourceThreeCharComponents[2] is #{@sourceThreeCharComponents[2]}"
+
+
+	    p $finalSourceOneChar.count
+	    if $finalSourceOneChar.count == 1  
+	      p "Running"
+	      $finalSourceOneChar.each do |sSOC|
+	      #split sourceThreeChar into individual letters, with index
+		###p "sSOC"
+		@localThreeChar = Array.new
+	        @localThreeChar = sourceThreeChar.split(//) 
+		####p "@localThreeChar.count is #{@localThreeChar.count}"
+		@localThreeChar.each_with_index do |lTC, index|
+		  ###p "lTC and index are #{lTC} and #{index}"
+		  ###p "Hence, @localThreeChar[index] is also #{@localThreeChar[index]}"
+	          #compare singleSourceOneChar against each index position of sourceThreeChar (e.g, 'M'TN, RA'M')
+				  
+		  ###p "@localThreeChar[index] is #{@localThreeChar[index]}" 
+		  
+	          if sSOC == @localThreeChar[index]
+		    #  store array variable X with the position only?
+		    #  i think so, becasue then we can run the 'arrayConstrinedTLW' 
+		    #  through the index check to find out which have that latter 
+		    #  in that position.
+		    ###p "@localTLWPosition[index] is #{@localTLWPosition[index]}"
+		    @localTLWPosition = @localTLWPosition.push(index)
+		    ###p "Whee!"
+		    ###p "@localTLWPosition[0] is #{@localTLWPosition[0]}"
+
+		  #  p "sSOC matches #{@localThreeChar[index]}!"
+	          #  @arrayConstrainedThreeLetterWords.each do |aCTLW|
+		  #	p "At the aCTLW phase"
+		  # 	  matchingThreeChar = aCTLW.split(//)
+		  #  	  matchingThreeChar.each do |mTC|
+		  #	    p "mTC is #{mTC}"
+		  #  	  #  p "aCTLW is #{aCTLW}"
+		  #  	  #  p "mTC[index] == #{mTC[index]}"
+		  #	    p "aCTLW[index] is #{aCTLW[index]}"
+		  #	    if aCTLW[index] == mTC
+		  #		puts "Success! mTC is #{mTC}"
+		  #		# something to pull that character back into the word
+		  #	    end	
+		  #	  end
+	   	  #  end
+	   	  else
+ 	  	    p "Nope"
+	   	  end
+	        end
+	      end
+	    else 
+	      p "En-ope"
 	    end
+
+		###p "@localTLWPosition.class is #{@localTLWPosition.class}"
+
+@i=0
+	    # Now, start matching the localTLWPosition   
+	    # This is the position where the single-letter-word
+	    # was found in the ciphertext. We need to go from 
+ 	    # here to finding out where it will be in the plain
+	    # text:
+	    @localTLWPosition.each do |lTLWP|
+		###p "Local position is #{lTLWP}"
+		# cycle through the words in arrayConstrainedThreeLetterWords,
+		# placing only those that have an  'a' or an 'i' in the correct 
+		# position into @arrayApprovedThreeLetterWordsa
+		p "arrayConstrainedThreeLetterWords.count is #{@arrayConstrainedThreeLetterWords.count}"
+		@arrayConstrainedThreeLetterWords.each_with_index do |aCTLWord, index1|
+		  p "@i is #{@i}"
+		  @aCTLWParts = aCTLWord.split(//)
+		  @aCTLWParts.each_with_index do |aCTLW, index2|
+			if lTLWP == index2
+			p "aCTLW is #{aCTLW} and index is #{index2}"
+		  	 ###p "lTWLP does match index at lTLWP of #{lTLWP}"
+			 #p "@arrayConstrainedThreeLetterWords[index1] == #{@arrayConstrainedThreeLetterWords[index1]}"
+			 p "@aCTLWParts is #{@aCTLWParts}"
+			p "aCTLWord is #{aCTLWord}"
+			    if @aCTLWParts[lTLWP] == 'a'
+				p "Matchymatchymatch!!!"
+			        arrayApprovedThreeLetterWords = arrayApprovedThreeLetterWords.push(aCTLWord)
+			    else
+				p "no Match"
+			    end
+			else
+		    	    p "lTLWP not found in index. Weird."
+	    		end
+    		  end
+		  @i+=1
+		end  
+	    end		
+
+	    p "arrayApprovedThreeLetterWords.count = #{arrayApprovedThreeLetterWords.count}"
+	arrayApprovedThreeLetterWords.each do |aATLW|
+		puts 
+		puts "aATLW is #{aATLW}"
+		puts
+	end	
+
+
+###	    @sourceThreeCharComponents.each_with_index do |fOC, index|
+###	 	#
+###		# What we're saying here is: take apart each common three-letter word,
+###		# and check to see if sourceThreeChar's current index matches it. If so, 
+###		# drop it into the new array of common three letter words against
+###		# which we're checking:
+###		# (this is a nine-charatcer check, three-by-three
+###		#  each three aOCTL gets checked against each
+###		#
+###		# This subsection checks the list of letters from the common
+###		# three letter words, and adds the word if finalSourceOneChar is one 
+###		# of the three:
+###		$finalSourceOneChar.each do |finalSourceOneCharItem|
+###			p "finalSourceOneCharItem is #{finalSourceOneCharItem}"
+###	      		if finalSourceOneCharItem == fOC
+###		    p "Match!"
+###      		    p "finalSourceOneCharItem is #{finalSourceOneCharItem}"
+###		    p "fOC is #{fOC}"
+###		    p "index is #{index}"
+###		    # So, I found a match between the single-char source item and one
+###		    # of the letters in the 'current' three-letter source (is it current,
+###		    # though, or is this the only time it would be running???)
+###		    arrayOfConstrainedThreeLetterWordComponents = [ "and", "are", "all", "any", "can", "had", "was", "day", "has", "him", "his", "man", "way", "did", "its", "say" ]
+###		  else
+###	    	    p "No match... :-(   "		    
+###		    p "fOC is #{fOC}"
+###		    
+###		    p "index is #{index}"
+ ###		  # if you find this, you should also have the index number, so you can 
+###		  # grab the correct tla more quickly(in theory):
+###		  end
+		
+		  #@arrayCmnThreeLetterWordsApproved = @arrayCmnThreeLetterWordsApproved.push(j)
+            	  #@firstTempString=@sourceString.gsub("#{@sourceThreeChar[0]}","#{@arrayOfCmnThreeLetterWordsApproved[0]}")
+            	  #@secondTempString=@firstTempString.gsub("#{@sourceThreeChar[1]}","#{@arrayOfCmnThreeLetterWordsApproved[1]}")
+            	  #@thirdTempString=@secondTempString.gsub("#{@sourceThreeChar[2]}","#{@arrayOfCmnThreeLetterWordsApproved[2]}")
+		  #	p "thirdTempString[0] is #{@thirdTempString[0]}"
+###	        end
+###	    end
 
 
 
 	#if @c == 38
-	#then    
+	#then   
             #puts @firstTempString
             #puts @secondTempString
             puts @thirdTempString
@@ -207,7 +338,6 @@ class ArrayOfCharacters < Array
         end
         #gets
     end
-
 
     # here we initialize the 'number_of_characters' 
     # method, which is used as the main variable for new ArrayOfCharacters 
@@ -234,7 +364,7 @@ end
 $finalOneLetterArray=Array.new
 $finalTwoLetterArray=Array.new
 $finalThreeLetterArray=Array.new
-$finalOneSourceChar=Array.new
+$finalSourceOneChar=Array.new
 $finalTwoChar=Array.new
 # No need for $finalThreeChar, as this is
 # designed to pass the prior run's captured
@@ -310,8 +440,9 @@ p " "
 p "Time to run num_triple_letters:"
 #@arrayThreeCharMid.uniq.each { |k| array_three_char.num_triple_letters k }
 @sourceArrayThreeCharMid=ArrayOfCharacters.new("3")
+@sourceArrayThreeCharMid << @arrayThreeCharMid[0]
 @sourceArrayThreeCharMid << @arrayThreeCharMid[1]
-@sourceArrayThreeCharMid.each { |k| array_three_char.num_triple_letters k }
+@sourceArrayThreeCharMid.each { |sourceThreeChar| array_three_char.num_triple_letters sourceThreeChar }
 
 
 #p array_one_char.class
@@ -345,6 +476,6 @@ p "Time to run num_triple_letters:"
 #array_two_char.num_single_letters    
 #array_two_char.num_single_letters
 
-p $finalOneSourceChar.count
+p $finalSourceOneChar.count
 p $finalTwoChar[0]
 p $finalTwoChar[1]
