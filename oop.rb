@@ -3,7 +3,14 @@
 ## the dollar sign makes $string a 'global', since 
 ## it's the sole beginnging piece of date to work with:
 #$str="BT JPX RMLX PCUV AMLX ICVJP IBTWXVR CI M LMTR PMTN, MTN YVCJX CDXV MWMBTRJ JPX AMTNGXRJBAH UQCT JPX QGMRJXV CI JPX YMGG CI JPX HBTWR QMGMAX; MTN JPX HBTW RMY JPX QMVJ CI JPX PMTN JPMJ YVCJX. JPXT JPX HBTWR ACUTJXTMTAX YMR APMTWXN, MTN PBR JPCUWPJR JVCUFGXN PBL, RC JPMJ JPX SCBTJR CI PBR GCBTR YXVX GCCRXN, MTN PBR HTXXR RLCJX CTX MWMBTRJ MTCJPXV. JPX HBTW AVBXN MGCUN JC FVBTW BT JPX MRJVCGCWXVR, JPX APMGNXMTR, MTN JPX RCCJPRMEXVR. MTN JPX HBTW RQMHX, MTN RMBN JC JPX YBRX LXT CI FMFEGCT, YPCRCXDXV RPMGG VXMN JPBR YVBJBTW, MTN RPCY LX JPX BTJXVQVXJMJBCT JPXVXCI, RPMGG FX AGCJPXN YBJP RAM"
-$str="BT JPX MTN M BT"
+#$str="BT JPX MTN M BT"
+
+File.open("/root/string.txt").each { |line|
+	    $str = line
+}
+
+$i=0
+$j=0
 
 puts "Original string is #{$str}"
 
@@ -48,6 +55,7 @@ class ArrayOfCharacters < Array
     def initialize(string)    
 	@string=string
     end
+
 
 
     # Originally, I thought of making a nested method for this
@@ -143,24 +151,36 @@ class ArrayOfCharacters < Array
         # to be incremented:
         @c=0
 
+
+
+	p "Running - $j is #{$j}"
+	$j += 1
+	@a = 0
+
 	def initialize(arrayOfCmnThreeLetterWordsApproved)    
 	  @arrayOfCmnThreeLetterWordsApproved=arrayOfCmnThreeLetterWordsApproved 
     	end
 
-	@localTLWPosition = Array.new
+
+
 	arrayApprovedThreeLetterWords = Array.new
+	@localTLWPosition = Array.new
+
+
 
         #@sourceThreeCharArrayMid = $sourceThreeCharArrayNew
-        p "sourceThreeCar is #{sourceThreeChar}"
+        p "sourceThreeChar is #{sourceThreeChar}"
         #@arrayCommonThreeLetterWords = [ "the", "and", "for", "are", "but", "not", "you", "all", "any", "can", "had", "her", "was", "one", "our", "out", "day", "get", "has", "him", "his", "how", "man", "new", "now", "old", "see", "two", "way", "who", "boy", "did", "its", "let", "put", "say", "she", "too", "use" ]        
-        @arrayCommonThreeLetterWords = [ "and", "can", "all", "the" ]        
-        #@arrayConstrainedThreeLetterWords = [ "and", "can", "all" ]        
-        @arrayConstrainedThreeLetterWords = [ "and", "can" ]        
+        @arrayCommonThreeLetterWords = [ "and", "can", "all", "the", "how" ]        
+        @arrayConstrainedThreeLetterWords = [ "and", "can", "all" ]        
+        #@arrayConstrainedThreeLetterWords = [ "and", "can" ]        
         #p @arrayCommonThreeLetterWords[$c]
         
         
         # This is the entry point for the split-tla-into-individual-letters logic:
         @arrayCommonThreeLetterWords.each do |j|
+	      p "Running for the #{@a} time"
+	      @a += 1
             @sourceString=$str
 
             # first build the array of 
@@ -186,17 +206,18 @@ class ArrayOfCharacters < Array
 	    ##p  "sourceThreeCharComponents[2] is #{@sourceThreeCharComponents[2]}"
 
 
-	    p $finalSourceOneChar.count
+	    #p "finalSourceOneChar.count is #{$finalSourceOneChar.count}"
 	    if $finalSourceOneChar.count == 1  
-	      p "Running"
 	      $finalSourceOneChar.each do |sSOC|
 	      #split sourceThreeChar into individual letters, with index
-		###p "sSOC"
+		#p "sSOC is #{sSOC}"
 		@localThreeChar = Array.new
 	        @localThreeChar = sourceThreeChar.split(//) 
 		####p "@localThreeChar.count is #{@localThreeChar.count}"
+		#p "sourceThreeChar is #{sourceThreeChar}"
 		@localThreeChar.each_with_index do |lTC, index|
-		  ###p "lTC and index are #{lTC} and #{index}"
+	          #p "index is #{index}"
+		  p "lTC and index are #{lTC} and #{index}"
 		  ###p "Hence, @localThreeChar[index] is also #{@localThreeChar[index]}"
 	          #compare singleSourceOneChar against each index position of sourceThreeChar (e.g, 'M'TN, RA'M')
 				  
@@ -207,8 +228,24 @@ class ArrayOfCharacters < Array
 		    #  i think so, becasue then we can run the 'arrayConstrinedTLW' 
 		    #  through the index check to find out which have that latter 
 		    #  in that position.
-		    ###p "@localTLWPosition[index] is #{@localTLWPosition[index]}"
-		    @localTLWPosition = @localTLWPosition.push(index)
+		    ###p "@localTLWPosition[index] is #{localTLWPosition[index]}"
+		
+
+		    # This logic never really worked - it was meant to say
+	 	    # 'If there's already a '0', don't re-enter it. I got the
+		    # same effect by using '.uniq!' later on, though.
+		    if !@localTLWPosition.include?("0")
+			p "There's already a '0'"
+		    	@localTLWPosition = @localTLWPosition.push(index)
+		    elsif !@localTLWPosition.include?("1")
+			p "There's already a '1'"
+		    	@localTLWPosition = @localTLWPosition.push(index)
+		    elsif !@localTLWPosition.include?("2")
+			p "There's already a '2'"
+		    	@localTLWPosition = @localTLWPosition.push(index)
+		    end
+
+		    p "localTLWposition.count is #{@localTLWPosition.count}"
 		    ###p "Whee!"
 		    ###p "@localTLWPosition[0] is #{@localTLWPosition[0]}"
 
@@ -236,51 +273,64 @@ class ArrayOfCharacters < Array
 	      p "En-ope"
 	    end
 
-		###p "@localTLWPosition.class is #{@localTLWPosition.class}"
 
-@i=0
-	    # Now, start matching the localTLWPosition   
+	    @localTLWPosition.uniq!
+	    $localTLWPosition=@localTLWPosition
+
+	    p "@localTLWPosition.count is #{@localTLWPosition.count}"
+	    @localTLWPosition.each do |a|
+		    puts "@localTLWPosition is #{a}"
+	    end
+
+  
+	    # Now, start matching the @localTLWPosition   
 	    # This is the position where the single-letter-word
 	    # was found in the ciphertext. We need to go from 
  	    # here to finding out where it will be in the plain
 	    # text:
+	    
 	    @localTLWPosition.each do |lTLWP|
 		###p "Local position is #{lTLWP}"
 		# cycle through the words in arrayConstrainedThreeLetterWords,
 		# placing only those that have an  'a' or an 'i' in the correct 
 		# position into @arrayApprovedThreeLetterWordsa
-		p "arrayConstrainedThreeLetterWords.count is #{@arrayConstrainedThreeLetterWords.count}"
+		#p "arrayConstrainedThreeLetterWords.count is #{@arrayConstrainedThreeLetterWords.count}"
 		@arrayConstrainedThreeLetterWords.each_with_index do |aCTLWord, index1|
-		  p "@i is #{@i}"
+		  #p "$i is #{$i}"
 		  @aCTLWParts = aCTLWord.split(//)
 		  @aCTLWParts.each_with_index do |aCTLW, index2|
+			#p "lTWLP is #{lTLWP} and index2 is #{index2}"
 			if lTLWP == index2
-			p "aCTLW is #{aCTLW} and index is #{index2}"
+			#p "aCTLW is #{aCTLW} and index is #{index2}"
 		  	 ###p "lTWLP does match index at lTLWP of #{lTLWP}"
 			 #p "@arrayConstrainedThreeLetterWords[index1] == #{@arrayConstrainedThreeLetterWords[index1]}"
-			 p "@aCTLWParts is #{@aCTLWParts}"
-			p "aCTLWord is #{aCTLWord}"
+			 #p "@aCTLWParts is #{@aCTLWParts}"
+			 #p "aCTLWord is #{aCTLWord}"
 			    if @aCTLWParts[lTLWP] == 'a'
-				p "Matchymatchymatch!!!"
+				p "Matchymatchymatch!!! On '#{aCTLWord}' at position #{lTLWP}"
+				
 			        arrayApprovedThreeLetterWords = arrayApprovedThreeLetterWords.push(aCTLWord)
 			    else
-				p "no Match"
+				#p "no Match"
 			    end
 			else
-		    	    p "lTLWP not found in index. Weird."
+		    	    #p "lTLWP not found in index. Weird."
 	    		end
     		  end
-		  @i+=1
+		  $i+=1
 		end  
 	    end		
 
-	    p "arrayApprovedThreeLetterWords.count = #{arrayApprovedThreeLetterWords.count}"
+	    #p "arrayApprovedThreeLetterWords.count = #{arrayApprovedThreeLetterWords.count}"
 	arrayApprovedThreeLetterWords.each do |aATLW|
-		puts 
-		puts "aATLW is #{aATLW}"
-		puts
-	end	
+		#puts 
+		#puts "aATLW is #{aATLW}"
+		#puts
 
+	end	
+	p "|"
+	p "|"
+	p "|"
 
 ###	    @sourceThreeCharComponents.each_with_index do |fOC, index|
 ###	 	#
@@ -359,6 +409,13 @@ class ArrayOfCharacters < Array
         @string.scan(%r{(?<![A-Z])[A-Z]{#{@numchar}}(?![A-Z])})
 
     end   
+
+    #def localTLWPositionPrint
+    #p "Inner @localTLWPosition.class is #{@localTLWPosition.class}"
+    #p "Inner @localTLWPosition.inspect is #{@localTLWPosition.inspect}"
+    #end
+    $localTLWPosition=@localTLWPosition
+
 end
 
 $finalOneLetterArray=Array.new
@@ -440,8 +497,10 @@ p " "
 p "Time to run num_triple_letters:"
 #@arrayThreeCharMid.uniq.each { |k| array_three_char.num_triple_letters k }
 @sourceArrayThreeCharMid=ArrayOfCharacters.new("3")
+# This is temporary, to constrin the amount of data being tested:
 @sourceArrayThreeCharMid << @arrayThreeCharMid[0]
 @sourceArrayThreeCharMid << @arrayThreeCharMid[1]
+p "@sourceArrayThreeCharMid.count is #{@sourceArrayThreeCharMid.count}"
 @sourceArrayThreeCharMid.each { |sourceThreeChar| array_three_char.num_triple_letters sourceThreeChar }
 
 
@@ -459,11 +518,11 @@ p "Time to run num_triple_letters:"
 #p array_two_char.count 
 
 
-# Treid TracePoint at one point, didn't find it helped all that much
-#trace = TracePoint.new(:raise) do |t|
-#  p t.inspect
-#end	  
-#trace.enable
+# Tried TracePoint at one point, didn't find it helped all that much
+trace = TracePoint.new(:raise) do |t|
+  p t.inspect
+end	  
+trace.enable
 
 
 #p "Array_two_char.class is a " + array_two_char.class.to_s
@@ -479,3 +538,9 @@ p "Time to run num_triple_letters:"
 p $finalSourceOneChar.count
 p $finalTwoChar[0]
 p $finalTwoChar[1]
+
+#@sourceArrayThreeCharMid.localTLWPositionPrint
+$localTLWPosition.each do |a|
+    puts "$localTLWPosition is #{a}"
+end
+
