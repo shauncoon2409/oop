@@ -14,7 +14,6 @@ $j=0
 
 puts "Original string is #{$str}"
 
-
 # A few incrementing globals, in a
 # trick I learned back in my Perl days
 $a=0
