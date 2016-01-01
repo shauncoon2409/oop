@@ -12,8 +12,8 @@ File.open("/root/string.txt").each { |line|
 $i=0
 $j=0
 
-
 puts "Original string is #{$str}"
+
 
 # A few incrementing globals, in a
 # trick I learned back in my Perl days
@@ -165,7 +165,7 @@ class ArrayOfCharacters < Array
 
 	arrayApprovedThreeLetterWords = Array.new
 	@localTLWPosition = Array.new
-
+    	#attr_reader :localTLWPosition
 
 
         #@sourceThreeCharArrayMid = $sourceThreeCharArrayNew
@@ -410,10 +410,18 @@ class ArrayOfCharacters < Array
 
     end   
 
+
     #def localTLWPositionPrint
     #p "Inner @localTLWPosition.class is #{@localTLWPosition.class}"
     #p "Inner @localTLWPosition.inspect is #{@localTLWPosition.inspect}"
     #end
+    # Seemslike the only way to access an instance variable from inside a 
+    # class is to assign a global variable to it, and then call the global
+    # (as gets done at the end). I tried accessors, but that failed either
+    # with "undefined method `attr_reader' for []:ArrayOfCharacters", as 
+    # it didnt like being at that the top level of the Class code - and
+    # this makes no sense anyway, since the ArrayOfCharacters class inherits
+    # from Array - or, 'deeper' in the class, it just wouldn't  get called.
     $localTLWPosition=@localTLWPosition
 
 end
