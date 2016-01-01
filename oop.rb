@@ -12,6 +12,7 @@ File.open("/root/string.txt").each { |line|
 $i=0
 $j=0
 
+
 puts "Original string is #{$str}"
 
 # A few incrementing globals, in a
